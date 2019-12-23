@@ -2,6 +2,7 @@
 import tkinter as tk
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg, NavigationToolbar2Tk)
@@ -45,13 +46,44 @@ class Application(tk.Frame):
     def processData(self, data):
         print("Data ===========")
         print(data)
-        fig = Figure(figsize=(5, 4), dpi=100)
-        t = np.arange(0, 3, .01)
-        fig.add_subplot(111).plot(t, 2 * np.sin(2 * np.pi * t))
+        # fig = Figure(figsize=(5, 4), dpi=100)
+        # t = np.arange(0, 3, .01)
+        # fig.add_subplot(111).plot(t, 2 * np.sin(2 * np.pi * t))
+        data1, data2, data3, data4 = np.random.randn(4, 100)
+        fig, (ax1, ax2) = plt.subplots(1, 2)
+        plt.title('interactive test')
+        self.my_plotter(ax1, data1, data2, {'marker': 'x'})
+        self.my_plotter(ax2, data3, data4, {'marker': 'o'})
 
         self.canvas = FigureCanvasTkAgg(fig, master=self.master)
         self.canvas.draw()
         self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
+    def my_plotter(self, ax, data1, data2, param_dict):
+        """
+        A helper function to make a graph
+
+        Parameters
+        ----------
+        ax : Axes
+            The axes to draw to
+
+        data1 : array
+        The x data
+
+        data2 : array
+        The y data
+
+        param_dict : dict
+        Dictionary of kwargs to pass to ax.plot
+
+        Returns
+        -------
+        out : list
+            list of artists added
+        """
+        out = ax.plot(data1, data2, **param_dict)
+        return out
 
 
 def main():
